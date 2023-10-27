@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -8,13 +9,13 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class NavbarComponent implements OnInit{
 
   @Output() toggleSidebarForMe: EventEmitter<any> = new EventEmitter();
-  constructor(){}
+  constructor(private route:Router){}
   ngOnInit(): void {
     
   }
 
   logout(): void {
-    console.log('Logged out');
+    this.route.navigate(['/login']);
   }
   toggleSidebar() {
     this.toggleSidebarForMe.emit();
