@@ -10,4 +10,3 @@ export class ConfigApi {
       DELETE:ConfigApi.BASE_URL+"/detete",
     }
 }
-/*  */

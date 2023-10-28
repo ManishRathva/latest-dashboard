@@ -9,7 +9,15 @@
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="logout()">
-        <span>Logout</span>
+        <span class="mb-1" style="display: flex; align-items: center;">
+          <mat-icon class="mr-2">person</mat-icon>Profile
+        </span>
+        <span class="mb-1" style="display: flex; align-items: center;">
+          <mat-icon class="mr-2">settings</mat-icon>Setting
+        </span>
+        <span style="display: flex; align-items: center;">
+          <mat-icon class="mr-2">logout</mat-icon>Logout
+        </span>
       </button>
     </mat-menu>
   </mat-toolbar>

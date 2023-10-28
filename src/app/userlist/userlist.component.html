@@ -1,47 +1,139 @@
-<div class="container-fluid p-4">
-    <h1>Userlist</h1>
-    <div class="col-sm-12">
-        <table class="table table-hover table-bordered table-stripe">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Larry the Bird</td>
-                  <td>@twitter</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>Larry the Bird</td>
-                  <td>@twitter</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>Larry the Bird</td>
-                  <td>@twitter</td>
-                  <td>@fat</td>
-                </tr>
-              </tbody>  
-          </table>
+<div class="container-fluid p-2">
+  <div class="item-nav">
+    <div>
+      <h5>Userlist</h5>
     </div>
- </div>
+    <div><button class="btn addbtn well" style="background-color: #3f51b5;color: white;" (click)="openModal(editModal, {}, 'Create Data')">+ Add User</button></div>
+  </div>
+
+<div class="container-fluid">
+  <mat-form-field class="w-100">
+    <mat-label>Filter Data</mat-label>
+    <input matInput (keyup)="findUserByName(input)" #input>
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+  <table mat-table [dataSource]="listData" matSort>
+    <ng-container matColumnDef="fname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.fname}} </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="lname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.lname}}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="fullname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.fullname}} </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+      <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+      <td mat-cell *matCellDef="let row"> 
+        <mat-icon color="primary" (click)="openModal(editModal, row, 'Edit Data')">edit</mat-icon>&nbsp;
+      <mat-icon color="warn" (click)="deleteData(row._id)">delete</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell p-3" colspan="4">No Found"{{input.value}}"</td>
+    </tr>
+  </table>
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 20]">
+  </mat-paginator>
+</div>
+</div>
+
+
+  <!-- <div class="table-responsive p-3">
+    <table class="table table-hover mt-2 table-bordered text-center">
+       <thead>
+        <tr>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>FullName</th>
+        <th>Role</th>
+        <th>Action</th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr *ngFor="let data of listData">
+          <td>{{data.fname}}</td>
+          <td>{{data.lname}}</td>
+          <td>{{data.fullname}}</td>
+          <td>{{data.role}}</td>
+          <td>
+            <div><a (click)="openModal(editModal, data, 'Edit Data')" ngbTooltip="Edit"><i class="bi bi-pen"></i></a>&nbsp;
+              <a (click)=deleteData(data._id) ngbTooltip="Delete"><i class="bi bi-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+       </tbody>
+    </table>
+  </div> -->
+<!-- </div> -->
+
+
+
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ modeltitle }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeBtnClick()"></button>
+  </div>
+  <div class="modal-body">
+    <form *ngIf="modeltitle == 'Create Data' || modeltitle == 'Edit Data'" [formGroup]="addForm" (ngSubmit)="submitData(addForm)">
+      <div class="form-group">
+        <label for="fname" class="form-label">First Name<span class="text-danger">*</span></label>
+        <input id="fname" type="text" aria-label="fname" formControlName="fname"  class="form-control" placeholder="first Name" [(ngModel)]="submitForm.fname" [ngClass]="{ 'is-invalid': onSubmitted && f['fname'].errors }">
+      <div *ngIf="onSubmitted && f['fname'].errors" class="invalid-feedback">
+        <div *ngIf="f['fname'].errors['required']">First Name is required</div>
+      </div>
+      </div>
+      <div class="form-group">
+        <label for="lname" class="form-label">Last Name <span class="text-danger">*</span></label>
+        <input id="lname" type="text" aria-label="lname"  formControlName="lname" class="form-control" placeholder="last Name" [(ngModel)]="submitForm.lname" [ngClass]="{ 'is-invalid': onSubmitted && f['lname'].errors }">
+        <div *ngIf="onSubmitted && f['lname'].errors" class="invalid-feedback">
+          <div *ngIf="f['lname'].errors['required']">Last Name is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fullname" class="form-label">Full Name <span class="text-danger">*</span></label>
+        <input id="fullname" type="text" aria-label="fullname" formControlName="fullname"    class="form-control" placeholder="full Name" [(ngModel)]="submitForm.fullname" [ngClass]="{ 'is-invalid': onSubmitted && f['fullname'].errors }">
+        <div *ngIf="onSubmitted && f['fullname'].errors" class="invalid-feedback">
+          <div *ngIf="f['fullname'].errors['required']">Full Name is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="role" class="form-label">Role<span class="text-danger">*</span></label>
+        <input id="role" type="text" aria-label="role" formControlName="role" class="form-control" placeholder="Role" [(ngModel)]="submitForm.role" [ngClass]="{ 'is-invalid': onSubmitted && f['role'].errors }">
+        <div *ngIf="onSubmitted && f['role'].errors" class="invalid-feedback">
+          <div *ngIf="f['role'].errors['required']">Role is required</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closeBtnClick()">
+          Close
+        </button>
+
+        <button type="submit" class="btn btn-secondary btn-raised mr-1">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

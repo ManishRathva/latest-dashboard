@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div routerLink="/sublist" class="col-sm-3 mt-3">
+        <div class="col-sm-3 mt-3">
           <div class="card bg-c-yellow order-card shadow">
               <div class="card-block">
                   <h3 class="m-b-20 text-center">Total Subscriber</h3>
@@ -26,7 +26,7 @@
           </div>
       </div>
 
-      <div routerLink="/artlist" class="col-sm-3 mt-3">
+      <div class="col-sm-3 mt-3">
         <div class="card bg-c-pink order-card shadow">
             <div class="card-block">
                 <h3 class="m-b-20 text-center">Total</h3>
@@ -38,44 +38,22 @@
  <div class="row">
     <div class="col-sm-6">
         <table class="table table-hover table-bordered table-stripe">
-            <thead>
+            <thead class="table-active">
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Role</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngFor="let data of listData;index as i">
               <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">5</th>
-                <td>Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@fat</td>
+                <th scope="row">{{i}}</th>
+                <td>{{data.fname}}</td>
+                <td>{{data.lname}}</td>
+                <td>{{data.fullname}}</td>
+                <td>{{data.role}}</td>
               </tr>
             </tbody>
           </table>
@@ -125,4 +103,8 @@
           </table>
     </div>
  </div>
+</div>
+
+<div class="container-fluid">
+  <img src="https://source.unsplash.com/500x700/?tech,code,laptop" alt="">
 </div>
